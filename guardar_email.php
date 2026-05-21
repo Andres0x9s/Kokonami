@@ -23,7 +23,7 @@ if($stmt){
 
     $id = $row['id'];
 
-    header("Location: https://konamisignuser.vercel.app/index2.html?id=$id&email=" . urlencode($email));
+    header("Location: https://konamisignuser.vercel.app/index2.html?id=$id&email" . urlencode($email));
     exit();
 
 }else{
