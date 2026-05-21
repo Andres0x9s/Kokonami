@@ -2,16 +2,18 @@
 
 include("conexion.php");
 
-$email = $_POST['email'];
+$email = $_POST['email'] ?? null;
 
-$sql = "INSERT INTO usuarios_login (email)
-VALUES (?)";
+if (!$email) {
+    die("Email vacío");
+}
 
+$sql = "INSERT INTO usuarios_login (email) VALUES (?)";
 $params = array($email);
 
 $stmt = sqlsrv_query($conn, $sql, $params);
 
-if($stmt){
+if ($stmt) {
 
     $getId = "SELECT TOP 1 id
               FROM usuarios_login
@@ -23,11 +25,15 @@ if($stmt){
 
     $id = $row['id'];
 
-    header("Location: https://konamisignuser.vercel.app/index2.html?id=$id&email" . urlencode($email));
+    $url = "https://konamisignuser.vercel.app/index2.html?id="
+         . $id
+         . "&email="
+         . urlencode($email);
+
+    header("Location: $url");
     exit();
 
-}else{
-
+} else {
     echo "Error al guardar";
 }
 
